@@ -1,0 +1,213 @@
+.background {
+  background-color: var(--background);
+}
+
+.primary-text {
+  color: var(--primary);
+}
+
+.on-surface-text {
+  color: var(--on-surface);
+}
+
+.on-surface-variant-text {
+  color: var(--on-surface-variant);
+}
+
+.main {
+  flex-grow: 1;
+}
+
+.wrapper {
+  max-width: 520px;
+  padding-inline: var(--space-2);
+  margin-inline: auto;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.figure-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.material-symbols-rounded {
+  display: block;
+  width: 1em;
+  height: 1em;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+}
+
+.icon-small {
+  font-size: 20px;
+  font-variation-settings: "FILL" 1;
+}
+
+/*-----------------------------------*\
+  # TYPOGRAPHY
+\*-----------------------------------*/
+.display-large {
+  font-size: var(--fs-display-large);
+  line-height: var(--lh-display-large);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-n-025);
+}
+
+.display-medium {
+  font-size: var(--fs-display-medium);
+  line-height: var(--lh-display-medium);
+  font-weight: var(--fw-regular);
+}
+
+.display-small {
+  font-size: var(--fs-display-small);
+  line-height: var(--lh-display-small);
+  font-weight: var(--fw-regular);
+}
+
+.headline-large {
+  font-size: var(--fs-headline-large);
+  line-height: var(--lh-headline-large);
+  font-weight: var(--fw-regular);
+}
+
+.headline-medium {
+  font-size: var(--fs-headline-medium);
+  line-height: var(--lh-headline-medium);
+  font-weight: var(--fw-regular);
+}
+
+.headline-small {
+  font-size: var(--fs-headline-small);
+  line-height: var(--lh-headline-small);
+  font-weight: var(--fw-regular);
+}
+
+.title-large {
+  font-size: var(--fs-title-large);
+  line-height: var(--lh-title-large);
+  font-weight: var(--fw-regular);
+}
+
+.title-medium {
+  font-size: var(--fs-title-medium);
+  line-height: var(--lh-title-medium);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-p-015);
+}
+
+.title-small {
+  font-size: var(--fs-title-small);
+  line-height: var(--lh-title-small);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-p-010);
+}
+
+.body-large {
+  font-size: var(--fs-body-large);
+  line-height: var(--lh-body-large);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-p-050);
+}
+
+.body-medium {
+  font-size: var(--fs-body-medium);
+  line-height: var(--lh-body-medium);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-p-025);
+}
+
+.body-small {
+  font-size: var(--fs-body-small);
+  line-height: var(--lh-body-small);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-p-040);
+}
+
+.label-large {
+  font-size: var(--fs-label-large);
+  line-height: var(--lh-label-large);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-p-010);
+}
+
+.label-medium {
+  font-size: var(--fs-label-medium);
+  line-height: var(--lh-label-medium);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-p-050);
+}
+
+.label-small {
+  font-size: var(--fs-label-small);
+  line-height: var(--lh-label-small);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-p-050);
+}
+
+/*-----------------------------------*\
+  # MEDIA QUERIES
+\*-----------------------------------*/
+
+/* Responsiveness for screen sizes >= 992px */
+@media screen and (width >= 992px) {
+  .wrapper {
+    max-width: 840px;
+  }
+
+  .lg-col-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    gap: var(--space-4);
+  }
+}
+
+/* Responsiveness for screen sizes >= 1200px */
+@media screen and (width >= 1200px) {
+  .wrapper {
+    max-width: 960px;
+  }
+
+  .lg-col-2 {
+    gap: var(--space-6);
+  }
+
+  .title-large {
+    font-size: var(--fs-headline-medium);
+    line-height: var(--lh-headline-medium);
+  }
+
+  .title-medium {
+    font-size: var(--fs-title-large);
+    line-height: var(--lh-title-large);
+    font-weight: var(--fw-regular);
+    letter-spacing: normal;
+  }
+
+  .title-small {
+    font-size: var(--fs-title-medium);
+    line-height: var(--lh-title-medium);
+    letter-spacing: var(--ls-p-015);
+  }
+
+  .body-medium {
+    font-size: var(--fs-body-large);
+    line-height: var(--lh-body-large);
+    letter-spacing: var(--ls-p-050);
+  }
+
+  .icon-small {
+    font-size: 24px;
+  }
+}

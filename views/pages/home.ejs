@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("../layouts/head", { title: "CupO'Coins | KeepSerene" }) %>
+  </head>
+
+  <body class="background on-surface-text custom-scrollbar"> 
+    <!-- Top bar (Header) -->
+    <header class="top-bar">
+      <div class="wrapper">
+          <a href="/" class="logo">
+              <img src="/images/logo.svg" alt="CupO'Coins logo">
+          </a>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main">
+      <article>
+        <!-- Hero section -->
+         <section class="hero">
+          <div class="wrapper">
+            <figure class="hero-banner">
+              <img src="/images/hero-banner.png" width="1536" height="1024" alt="Cover image" class="figure-img">
+            </figure>
+
+            <div class="hero-card">
+              <figure class="card-img">
+                <img src="/images/avatar.png" width="440" height="440" alt="" class="figure-img">
+              </figure>
+
+              <div class="card-content">
+                <h2 class="title-large">KeepSerene</h2>
+
+                <p class="subtitle body-medium on-surface-variant-text">MERN Stack Developer</p>
+
+                <p class="card-text body-medium on-surface-variant-text">Turning caffeine into code. If you like what I build, fuel the next commit.</p>
+              </div>
+            </div>
+          </div>
+         </section>
+
+         <div class="wrapper lg-col-2">
+            <!-- Contribute section -->
+            <section class="card elevated contribute">
+              <h2 class="title-medium">Sponsor a project</h2>
+
+              <form class="contribute-form" data-contribute-form>
+                <!-- Counter -->
+                <div class="counter-wrapper">
+                  <div class="body-medium on-surface-variant-text counter-label">
+                    <span class="material-symbols-rounded primary-text icon-small">favorite</span>
+          
+                    $1 each
+                  </div>
+
+                  <div class="counter">
+                    <button type="button" class="icon-btn filled" data-decrement-btn>
+                      <span class="material-symbols-rounded">remove</span>
+
+                      <div class="state-layer"></div>
+                    </button>
+
+                    <div class="text-field-wrapper counter-val-field">
+                      <input type="number" name="amount" value="1" min="1" step="1" max="999" required class="text-field outlined body-large" data-form-field data-counter-val-field>
+                    </div>
+
+                    <button type="button" class="icon-btn filled" data-increment-btn>
+                      <span class="material-symbols-rounded">add</span>
+
+                      <div class="state-layer"></div>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Name input -->
+                <div class="text-field-wrapper">
+                  <label for="name" class="text-field-label body-large">Name</label>
+
+                  <input type="text" name="name" id="name" placeholder="Name or @XHandle (optional)" class="text-field outlined body-large" data-form-field>
+                </div>
+
+                <!-- Email input -->
+                <div class="text-field-wrapper">
+                  <label for="email" class="text-field-label body-large">Email*</label>
+
+                  <input type="email" name="email" id="email" placeholder="your@email.com" required class="text-field outlined body-large" data-form-field>
+                </div>
+
+                <!-- Message textarea -->
+                <div class="text-field-wrapper">
+                  <label for="message" class="text-field-label body-large">Message</label>
+
+                  <textarea name="message" id="message" placeholder="Leave a note (optional)" class="text-field outlined body-large" data-form-field></textarea>
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="button filled label-large" data-submit-btn>
+                  Contribute $<span data-total-contribution-span>1</span>
+
+                  <div class="state-layer"></div>
+                </button>
+              </form>
+            </section>
+
+            <!-- About + History -->
+            <div>
+              <!-- About section -->
+              <section class="card outlined about">
+                <h2 class="title-medium">About</h2>
+
+                <p class="card-text on-surface-variant-text body-medium">
+                  I&apos;m a full-stack developer with a mathematics background, passionate about creating scalable web solutions. Experienced in database design, API integration, and secure authentication with proven results in performance optimization and cross-functional collaboration.
+                </p>
+
+                <p class="on-surface-variant-text body-medium container">
+                  <span class="material-symbols-rounded icon-small">alternate_email</span>
+
+                  <a href="mailto:dhrubajyotibhattacharjee182@gmail.com">Ping me</a>
+                </p>
+
+                <!-- Socials -->
+                <ul class="socials-list">
+                  <!-- Portfolio -->
+                  <li>
+                    <a href="https://math-to-dev.vercel.app/" target="_blank" aria-label="Visit my portfolio" title="Portfolio" class="social-link">
+                      <img src="/images/globe.svg" width="24" height="24" alt="Portfolio icon">
+                    </a>
+                  </li>
+
+                  <!-- LinkedIn -->
+                  <li>
+                    <a href="https://www.linkedin.com/in/dhrubajyoti-bhattacharjee-320822318/" target="_blank" aria-label="Visit my LinkedIn" title="LinkedIn" class="social-link">
+                      <img src="/images/linkedin.svg" width="24" height="24" alt="LinkedIn icon">
+                    </a>
+                  </li>
+
+                  <!-- GitHub -->
+                  <li>
+                    <a href="https://github.com/KeepSerene" target="_blank" aria-label="Visit my GitHub" title="GitHub" class="social-link">
+                      <img src="/images/github.svg" width="24" height="24" alt="GitHub icon">
+                    </a>
+                  </li>
+
+                  <!-- X (Twitter) -->
+                  <li>
+                    <a href="https://x.com/UsualLearner" target="_blank" aria-label="Visit my X (Twitter)" title="X (Twitter)" class="social-link">
+                      <img src="/images/x.svg" width="24" height="24" alt="X (Twitter) icon">
+                    </a>
+                  </li>
+                </ul>
+             </section>
+
+             <!-- History -->
+              <section class="card outlined history">
+                <h2 class="title-medium">Recent supporters</h2>
+
+                <ul class="history-list">
+                  <li class="history-card">
+                    <div class="card-header">
+                      <div class="card-avatar label-large">
+                        JD
+                      </div>
+
+                      <h3 class="title-small card-title">
+                        John Doe contributed <span class="primary-text">$100</span>
+                      </h3>
+                    </div>
+
+                    <p class="card-body body-large on-surface-variant-text">
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit nemo laborum ullam minus officia dolores.
+                    </p>
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+      </article>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="body-medium on-surface-variant-text">
+        &copy; <span class="copyright-year" data-copyright-year></span> KeepSerene.
+      </p>
+    </footer>
+  </body>
+</html>
