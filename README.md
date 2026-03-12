@@ -11,6 +11,6 @@
 - Complete the following files: `payment.api.js` and `script.js`.
 - Make the Contribute form fully functional in `home.ejs`.
 - Integrate MongoDB.
-- Fill up the necessary meta information in `head.ejs` and `package.json`.
+- Fill in the necessary meta information in `head.ejs` and `package.json`.
 
 _Peace..._
