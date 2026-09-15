@@ -8,8 +8,29 @@
 .top-bar .wrapper {
   width: 100%;
   height: 100%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-bar .logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-05);
+}
+
+.logo-img {
+  width: 32px;
+  height: 32px;
+}
+
+.logo-text {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-image: linear-gradient(90deg, var(--primary), #3fe0d0);
+  font-weight: var(--fw-bold);
 }
 
 /*-----------------------------------*\
@@ -132,6 +153,60 @@
   cursor: not-allowed;
 }
 
+.button [data-spinner] {
+  display: none;
+}
+
+.button [data-btn-label] {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button[disabled] [data-btn-label] {
+  display: none;
+}
+
+.button[disabled] [data-spinner] {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--radius-full);
+  animation: spin var(--tr-duration-long-4) linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/*-----------------------------------*\
+  # FORM ERROR
+\*-----------------------------------*/
+.form-error {
+  background-color: var(--error-container);
+  color: var(--on-error-container);
+  border-radius: var(--radius-small);
+  padding: var(--space-2) var(--space-3);
+}
+
+.form-error[hidden] {
+  display: none;
+}
+
+/*-----------------------------------*\
+  # SUCCESS BANNER
+\*-----------------------------------*/
+.success-banner {
+  background-color: var(--success);
+  color: var(--on-success);
+  text-align: center;
+  margin-top: var(--space-4);
+}
+
 /*-----------------------------------*\
   # SOCIAL LINK
 \*-----------------------------------*/
@@ -168,6 +243,15 @@
 
 /* Responsiveness for screen sizes >= 992px */
 @media screen and (width >= 992px) {
+  .logo-img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo-text {
+    font-size: var(--fs-headline-small);
+  }
+
   .social-link {
     padding: var(--space-2);
   }

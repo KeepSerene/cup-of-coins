@@ -9,7 +9,8 @@
     <header class="top-bar">
       <div class="wrapper">
           <a href="/" class="logo">
-              <img src="/images/logo.svg" alt="CupO'Coins logo">
+            <img src="/images/logo.svg" width="32" height="32" alt="CupO'Coins logo" class="logo-img">
+            <span class="logo-text title-large">CupO'Coins</span>
           </a>
       </div>
     </header>
@@ -17,24 +18,33 @@
     <!-- Main -->
     <main class="main">
       <article>
+        <!-- Success banner -->
+        <% if (showThankYouBanner) { %>
+          <div class="wrapper">
+            <p class="card success-banner body-medium" data-success-banner>
+              🎉 Thank you for your contribution!
+            </p>
+          </div>
+        <% } %>
+
         <!-- Hero section -->
          <section class="hero">
           <div class="wrapper">
             <figure class="hero-banner">
-              <img src="/images/hero-banner.png" width="1536" height="1024" alt="Cover image" class="figure-img">
+              <img src="/images/hero-banner.webp" width="2236" height="703" alt="Cover image" fetchpriority="high" class="figure-img">
             </figure>
 
             <div class="hero-card">
               <figure class="card-img">
-                <img src="/images/avatar.png" width="440" height="440" alt="" class="figure-img">
+                <img src="/images/avatar.png" width="440" height="440" alt="" fetchpriority="high" class="figure-img">
               </figure>
 
               <div class="card-content">
                 <h2 class="title-large">KeepSerene</h2>
 
-                <p class="subtitle body-medium on-surface-variant-text">MERN Stack Developer</p>
+                <p class="subtitle body-medium on-surface-variant-text">Full-Stack Engineer</p>
 
-                <p class="card-text body-medium on-surface-variant-text">Turning caffeine into code. If you like what I build, fuel the next commit.</p>
+                <p class="card-text body-medium on-surface-variant-text text-italic">Turning caffeine into code. If you like what I build, fuel the next commit.</p>
               </div>
             </div>
           </div>
@@ -62,7 +72,7 @@
                     </button>
 
                     <div class="text-field-wrapper counter-val-field">
-                      <input type="number" name="amount" value="1" min="1" step="1" max="999" required class="text-field outlined body-large" data-form-field data-counter-val-field>
+                      <input type="text" inputmode="numeric" pattern="\d*" name="amount" value="1" min="1" step="1" max="999" required class="text-field outlined body-large" data-form-field data-counter-val-field>
                     </div>
 
                     <button type="button" class="icon-btn filled" data-increment-btn>
@@ -77,7 +87,7 @@
                 <div class="text-field-wrapper">
                   <label for="name" class="text-field-label body-large">Name</label>
 
-                  <input type="text" name="name" id="name" placeholder="Name or @XHandle (optional)" class="text-field outlined body-large" data-form-field>
+                  <input type="text" name="name" id="name" maxlength="60" placeholder="Name or @XHandle (optional)" class="text-field outlined body-large" data-form-field>
                 </div>
 
                 <!-- Email input -->
@@ -91,32 +101,39 @@
                 <div class="text-field-wrapper">
                   <label for="message" class="text-field-label body-large">Message</label>
 
-                  <textarea name="message" id="message" placeholder="Leave a note (optional)" class="text-field outlined body-large" data-form-field></textarea>
+                  <textarea name="message" id="message" maxlength="500" placeholder="Leave a note (optional)" class="text-field outlined body-large" data-form-field data-message-field></textarea>
                 </div>
+
+                <!-- Character counter -->
+                <div class="char-counter label-small on-surface-variant-text" data-char-counter>0/500</div>
+
+                <!-- Form error -->
+                <p class="form-error body-medium" data-form-error hidden></p>
 
                 <!-- Submit button -->
                 <button type="submit" class="button filled label-large" data-submit-btn>
-                  Contribute $<span data-total-contribution-span>1</span>
+                  <span data-btn-label>Contribute $<span data-total-contribution-span>1</span></span>
+                  <span class="spinner" data-spinner aria-hidden="true"></span>
 
                   <div class="state-layer"></div>
                 </button>
               </form>
             </section>
 
-            <!-- About + History -->
+            <!-- About + History (Recent supporters) -->
             <div>
-              <!-- About section -->
+              <!-- About -->
               <section class="card outlined about">
                 <h2 class="title-medium">About</h2>
 
                 <p class="card-text on-surface-variant-text body-medium">
-                  I&apos;m a full-stack developer with a mathematics background, passionate about creating scalable web solutions. Experienced in database design, API integration, and secure authentication with proven results in performance optimization and cross-functional collaboration.
+                  Self-taught engineer with a Mathematics & Computing background. I build full-stack web apps and specialize in AI infra: self-hosting ML models and orchestrating the async pipelines that run them in production.
                 </p>
 
                 <p class="on-surface-variant-text body-medium container">
                   <span class="material-symbols-rounded icon-small">alternate_email</span>
 
-                  <a href="mailto:dhrubajyotibhattacharjee182@gmail.com">Ping me</a>
+                  <a href="mailto:keepserene.dev@gmail.com" class="text-link primary-text">Ping me</a>
                 </p>
 
                 <!-- Socials -->
@@ -151,27 +168,42 @@
                 </ul>
              </section>
 
-             <!-- History -->
+              <!-- History (Recent supporters) -->
               <section class="card outlined history">
                 <h2 class="title-medium">Recent supporters</h2>
 
-                <ul class="history-list">
-                  <li class="history-card">
-                    <div class="card-header">
-                      <div class="card-avatar label-large">
-                        JD
-                      </div>
+                <% if (recentSupporters.length) { %>
+                  <ul class="history-list">
+                    <% recentSupporters.forEach(function (supporter) { %>
+                      <li class="history-card">
+                        <div class="card-header">
+                          <div class="card-avatar label-large avatar-color-<%= supporter.avatarColorIndex %>">
+                            <%= supporter.initials %>
+                          </div>
 
-                      <h3 class="title-small card-title">
-                        John Doe contributed <span class="primary-text">$100</span>
-                      </h3>
-                    </div>
+                          <h3 class="title-small card-title">
+                            <% if (supporter.name.startsWith('@')) { %>
+                              <a href="https://x.com/<%= supporter.name.slice(1) %>" target="_blank" rel="noopener noreferrer" class="text-link primary-text">
+                                <%= supporter.name %>
+                              </a>
+                            <% } else { %>
+                              <%= supporter.name %>
+                            <% } %>
+                            contributed <span class="primary-text">$<%= supporter.amount %></span>
+                          </h3>
+                        </div>
 
-                    <p class="card-body body-large on-surface-variant-text">
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit nemo laborum ullam minus officia dolores.
-                    </p>
-                  </li>
-                </ul>
+                        <% if (supporter.message) { %>
+                          <p class="card-body body-large on-surface-variant-text">
+                            <%= supporter.message %>
+                          </p>
+                        <% } %>
+                      </li>
+                    <% }); %>
+                  </ul>
+                <% } else { %>
+                  <p class="body-medium on-surface-variant-text">Be the first to leave a note!</p>
+                <% } %>
               </section>
             </div>
           </div>

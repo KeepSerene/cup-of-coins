@@ -155,6 +155,76 @@
   letter-spacing: var(--ls-p-050);
 }
 
+.text-italic {
+  font-style: italic;
+}
+
+/*-----------------------------------*\
+  # AVATAR COLORS
+\*-----------------------------------*/
+.avatar-color-0 {
+  background-color: var(--avatar-0);
+  color: var(--on-avatar-0);
+}
+
+.avatar-color-1 {
+  background-color: var(--avatar-1);
+  color: var(--on-avatar-1);
+}
+
+.avatar-color-2 {
+  background-color: var(--avatar-2);
+  color: var(--on-avatar-2);
+}
+
+.avatar-color-3 {
+  background-color: var(--avatar-3);
+  color: var(--on-avatar-3);
+}
+
+.avatar-color-4 {
+  background-color: var(--avatar-4);
+  color: var(--on-avatar-4);
+}
+
+/*-----------------------------------*\
+  # CHARACTER COUNTER
+\*-----------------------------------*/
+.char-counter {
+  text-align: right;
+  margin-top: calc(-1 * var(--space-1));
+  transition: color var(--tr-duration-short-4) var(--tr-easing-standard);
+}
+
+.text-warning {
+  color: rgb(255 183 77);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+/*-----------------------------------*\
+  # INLINE TEXT LINKS
+\*-----------------------------------*/
+.text-link {
+  display: inline-block;
+  text-decoration: none;
+  transition: text-decoration var(--tr-duration-short-4)
+    var(--tr-easing-standard);
+}
+
+.text-link:where(:hover, :focus-visible) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.text-link:focus-visible {
+  border-radius: var(--radius-extra-small);
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 /*-----------------------------------*\
   # MEDIA QUERIES
 \*-----------------------------------*/
