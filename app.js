@@ -35,6 +35,11 @@ app.set("view engine", "ejs");
 
 const port = process.env.PORT || 3000;
 
+// Health check for Render
+app.get("/health", (_req, res) => {
+  res.status(200).send("OK");
+});
+
 // Routes setup
 app.use("/", homeRouter);
 app.use("/checkout", checkoutRouter);
