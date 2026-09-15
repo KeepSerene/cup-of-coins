@@ -30,7 +30,7 @@ A minimalist "buy me a coffee" support page — pay-what-you-want contributions,
 
 ## 🔗 Live Demo
 
-**[cup-of-coins.onrender.com](https://cup-of-coins.onrender.com)** _(update once deployed)_
+**[cup-of-coins.onrender.com](https://cup-of-coins.onrender.com)**
 
 > ⚠️ This is hosted on Render's free tier, which spins the service down after periods of inactivity. **The first request after a period of inactivity can take ~50 seconds** to wake it back up — subsequent requests are fast. This is a hosting-tier limitation, not an app performance issue.
 >
