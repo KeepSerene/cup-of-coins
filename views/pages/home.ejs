@@ -31,12 +31,12 @@
          <section class="hero">
           <div class="wrapper">
             <figure class="hero-banner">
-              <img src="/images/hero-banner.webp" width="2236" height="703" alt="Cover image" class="figure-img">
+              <img src="/images/hero-banner.webp" width="2236" height="703" alt="Cover image" fetchpriority="high" class="figure-img">
             </figure>
 
             <div class="hero-card">
               <figure class="card-img">
-                <img src="/images/avatar.png" width="440" height="440" alt="" class="figure-img">
+                <img src="/images/avatar.png" width="440" height="440" alt="" fetchpriority="high" class="figure-img">
               </figure>
 
               <div class="card-content">
@@ -72,7 +72,7 @@
                     </button>
 
                     <div class="text-field-wrapper counter-val-field">
-                      <input type="number" name="amount" value="1" min="1" step="1" max="999" required class="text-field outlined body-large" data-form-field data-counter-val-field>
+                      <input type="text" inputmode="numeric" pattern="\d*" name="amount" value="1" min="1" step="1" max="999" required class="text-field outlined body-large" data-form-field data-counter-val-field>
                     </div>
 
                     <button type="button" class="icon-btn filled" data-increment-btn>

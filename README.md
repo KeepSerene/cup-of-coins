@@ -43,7 +43,7 @@ A minimalist "buy me a coffee" support page — pay-what-you-want contributions,
 - [Overview](#-overview)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
+- [Project Structure](#-project-structure-tentative)
 - [Payments & Polar Sandbox](#-payments--polar-sandbox)
 - [Why a Custom Webhook Verifier?](#-why-a-custom-webhook-verifier)
 - [Local Development Tunnel](#-local-development-tunnel)

@@ -10,7 +10,10 @@ const {
   WebhookVerificationError,
 } = require("../utils/webhook.util");
 const { Supporter } = require("../models/supporter.model");
-const { POLAR_WEBHOOK_SECRET } = require("../config/polar.config");
+const {
+  POLAR_WEBHOOK_SECRET,
+  POLAR_PRODUCT_ID,
+} = require("../config/polar.config");
 const { MAX_CONTRIBUTION } = require("../config/contribution.config");
 
 async function polarWebhookController(req, res) {
@@ -39,6 +42,10 @@ async function polarWebhookController(req, res) {
     if (event.type === "order.paid") {
       const order = event.data;
 
+      if (order.product_id !== POLAR_PRODUCT_ID) {
+        return res.status(202).send("");
+      }
+
       if (order.total_amount > MAX_CONTRIBUTION * 100) {
         console.warn(
           `Contribution of $${(order.total_amount / 100).toFixed(2)} exceeds the site's advertised $${MAX_CONTRIBUTION} max (checkout ${order.checkout_id}).`,
@@ -54,7 +61,7 @@ async function polarWebhookController(req, res) {
             "Anonymous",
           message: order.metadata?.supporterMessage || "",
           amountInCents: order.total_amount,
-          polarCheckoutId: order.checkout_id,
+          polarCheckoutId: order.id,
         });
       } catch (error) {
         if (error?.code !== 11000) {

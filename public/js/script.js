@@ -165,6 +165,7 @@ $contributeForm.addEventListener("submit", async (event) => {
 
   try {
     $submitBtn.setAttribute("disabled", "");
+    $submitBtn.setAttribute("aria-label", "Processing contribution...");
     const $formFields = $contributeForm.querySelectorAll("[data-form-field]");
     const formData = {};
 
@@ -261,6 +262,7 @@ $contributeForm.addEventListener("submit", async (event) => {
     showFormError("Network error. Check your connection and try again.");
   } finally {
     $submitBtn.removeAttribute("disabled");
+    $submitBtn.removeAttribute("aria-label");
   }
 });
 

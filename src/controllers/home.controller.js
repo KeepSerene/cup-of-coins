@@ -20,7 +20,7 @@ async function homeController(req, res) {
     const recentSupporters = recentSupporterDocs.map((supporter) => ({
       name: supporter.name,
       message: supporter.message,
-      amount: Math.round(supporter.amountInCents / 100),
+      amount: (supporter.amountInCents / 100).toFixed(2),
       initials: getInitials(supporter.name),
       avatarColorIndex: getAvatarColorIndex(supporter.name),
     }));
