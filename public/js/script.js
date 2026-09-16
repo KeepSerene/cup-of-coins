@@ -9,7 +9,7 @@
  * Counter functionality
  */
 const $decrementBtn = document.querySelector("[data-decrement-btn]");
-const $counterValField = document.querySelector("[data-counter-val-field]");
+const $amountField = document.querySelector("[data-counter-val-field]");
 const $incrementBtn = document.querySelector("[data-increment-btn]");
 const $totalContributionSpan = document.querySelector(
   "[data-total-contribution-span]",
@@ -17,35 +17,56 @@ const $totalContributionSpan = document.querySelector(
 
 const MIN_CONTRIBUTION = 1;
 const MAX_CONTRIBUTION = 999;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Standard names (e.g., John O'Brian, Mary-Jane) OR an X handle (e.g., @XHandle_123)
+const NAME_REGEX = /^([a-zA-Z\s\-']+|@[a-zA-Z0-9_]{1,15})$/;
 
 const clamp = (val, min, max) => Math.min(Math.max(val, min), max);
 
-const setCounterValue = (val) => {
-  $counterValField.value = val;
-  $totalContributionSpan.textContent = val;
+// Function to check and update counter button state
+const updateCounterButtonState = (amountStr) => {
+  // If the field is completely cleared
+  if (!amountStr) {
+    $decrementBtn.disabled = true;
+    $incrementBtn.disabled = true;
+    return;
+  }
+
+  const val = Number(amountStr);
+  $decrementBtn.disabled = val <= MIN_CONTRIBUTION;
+  $incrementBtn.disabled = val >= MAX_CONTRIBUTION;
 };
+
+const setAmount = (amount) => {
+  $amountField.value = amount;
+  $totalContributionSpan.textContent = amount;
+  updateCounterButtonState(String(amount));
+};
+
+// Initialize counter button state on load
+updateCounterButtonState($amountField.value);
 
 // Decrement contribution functionality
 $decrementBtn.addEventListener("click", function () {
-  const currentVal = Number($counterValField.value);
+  const currentAmount = Number($amountField.value);
 
-  if (currentVal > MIN_CONTRIBUTION) {
-    setCounterValue(currentVal - 1);
+  if (currentAmount > MIN_CONTRIBUTION) {
+    setAmount(currentAmount - 1);
   }
 });
 
 // Increment contribution functionality
 $incrementBtn.addEventListener("click", function () {
-  const currentVal = Number($counterValField.value);
+  const currentAmount = Number($amountField.value);
 
-  if (currentVal < MAX_CONTRIBUTION) {
-    setCounterValue(currentVal + 1);
+  if (currentAmount < MAX_CONTRIBUTION) {
+    setAmount(currentAmount + 1);
   }
 });
 
 // Reject non-digit characters *before* they're inserted, rather than
 // stripping them after the fact
-$counterValField.addEventListener("beforeinput", function (event) {
+$amountField.addEventListener("beforeinput", function (event) {
   // event.data is null for non-insertion edits (backspace, delete, cut)
   // those are always safe and shouldn't be blocked here
   if (event.data && /\D/.test(event.data)) {
@@ -54,7 +75,7 @@ $counterValField.addEventListener("beforeinput", function (event) {
 });
 
 // Enter contribution functionality
-$counterValField.addEventListener("input", function () {
+$amountField.addEventListener("input", function () {
   // Fallback only: `beforeinput` (above) is what should normally prevent a
   // non-digit from ever landing here. This stays as a safety net for the
   // rare path where `beforeinput` isn't supported, and preserves cursor
@@ -63,6 +84,9 @@ $counterValField.addEventListener("input", function () {
   const cursorPos = this.selectionStart;
   const rawValue = this.value;
   const sanitized = rawValue.replace(/\D/g, "");
+
+  // Update counter button state dynamically as the user types or clears the field
+  updateCounterButtonState(sanitized);
 
   if (sanitized !== rawValue) {
     const removedBeforeCursor = rawValue
@@ -82,7 +106,7 @@ $counterValField.addEventListener("input", function () {
   // We don't clamp at min here — the user may be mid-typing (e.g. typing "15"
   // passes through "1" first, which is valid), so min is enforced on blur
   if (val > MAX_CONTRIBUTION) {
-    setCounterValue(MAX_CONTRIBUTION);
+    setAmount(MAX_CONTRIBUTION);
 
     return;
   }
@@ -100,11 +124,9 @@ $counterValField.addEventListener("input", function () {
 });
 
 // Clamp to min when the user leaves the field empty or below the minimum
-$counterValField.addEventListener("blur", function () {
+$amountField.addEventListener("blur", function () {
   const val = Number(this.value);
-  setCounterValue(
-    clamp(val || MIN_CONTRIBUTION, MIN_CONTRIBUTION, MAX_CONTRIBUTION),
-  );
+  setAmount(clamp(val || MIN_CONTRIBUTION, MIN_CONTRIBUTION, MAX_CONTRIBUTION));
 });
 
 /**
@@ -139,10 +161,23 @@ $messageField.addEventListener("input", function () {
 });
 
 /**
- * Submit contribute form
+ * Email validation & submit button state
  */
 const $contributeForm = document.querySelector("[data-contribute-form]");
 const $submitBtn = $contributeForm.querySelector("[data-submit-btn]");
+const $emailField = document.querySelector("[data-email-field]");
+
+function toggleSubmitBtn() {
+  $submitBtn.disabled = !EMAIL_REGEX.test($emailField.value.trim());
+}
+
+$emailField.addEventListener("input", toggleSubmitBtn);
+// Check on initial load
+toggleSubmitBtn();
+
+/**
+ * Submit contribute form
+ */
 const $formError = $contributeForm.querySelector("[data-form-error]");
 
 let formErrorTimeoutId;
@@ -163,63 +198,55 @@ function showFormError(message) {
 $contributeForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
+  // GATHER DATA & NORMALIZE
+  const $formFields = $contributeForm.querySelectorAll("[data-form-field]");
+  const formData = {};
+
+  $formFields.forEach((field) => {
+    formData[field.getAttribute("name")] = field.value.trim();
+  });
+
+  const parsedAmount = Number(formData.amount);
+  const clampedAmount = clamp(
+    Number.isFinite(parsedAmount) ? Math.trunc(parsedAmount) : MIN_CONTRIBUTION,
+    MIN_CONTRIBUTION,
+    MAX_CONTRIBUTION,
+  );
+
+  if (clampedAmount !== parsedAmount) {
+    setAmount(clampedAmount);
+  }
+  formData.amount = clampedAmount;
+
+  // CLIENT-SIDE VALIDATION
+  if (formData.name) {
+    if (formData.name.length < 2 || formData.name.length > 60) {
+      return showFormError("Name must be between 2 and 60 characters.");
+    }
+    if (!NAME_REGEX.test(formData.name)) {
+      return showFormError("Please enter a valid name or @XHandle.");
+    }
+  }
+
+  if (!EMAIL_REGEX.test(formData.email)) {
+    return showFormError("Please enter a valid email address.");
+  }
+
+  if (formData.message.length > MAX_CHARS) {
+    return showFormError(`Message cannot exceed ${MAX_CHARS} characters.`);
+  }
+
+  // LOCK UI & SUBMIT
   try {
+    // Lock submit button
     $submitBtn.setAttribute("disabled", "");
+    $submitBtn.classList.add("loading");
     $submitBtn.setAttribute("aria-label", "Processing contribution...");
-    const $formFields = $contributeForm.querySelectorAll("[data-form-field]");
-    const formData = {};
 
-    $formFields.forEach((field) => {
-      formData[field.getAttribute("name")] = field.value.trim();
-    });
-
-    // The field's own handlers above already keep this in
-    // range under normal use, but this guarantees what we actually submit is
-    // always within bounds, and keeps the visible counter in sync if it isn't
-    const parsedAmount = Number(formData.amount);
-    const clampedAmount = clamp(
-      Number.isFinite(parsedAmount)
-        ? Math.trunc(parsedAmount)
-        : MIN_CONTRIBUTION,
-      MIN_CONTRIBUTION,
-      MAX_CONTRIBUTION,
-    );
-
-    if (clampedAmount !== parsedAmount) {
-      setCounterValue(clampedAmount);
-    }
-
-    formData.amount = clampedAmount;
-
-    // --- VALIDATIONS ---
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    // Standard names (e.g., John O'Brian, Mary-Jane) OR an X handle (e.g., @XHandle_123)
-    const nameRegex = /^([a-zA-Z\s\-']+|@[a-zA-Z0-9_]{1,15})$/;
-
-    if (formData.name) {
-      if (formData.name.length < 2 || formData.name.length > 60) {
-        showFormError("Name must be between 2 and 60 characters.");
-        $submitBtn.removeAttribute("disabled");
-        return;
-      }
-      if (!nameRegex.test(formData.name)) {
-        showFormError("Please enter a valid name or @XHandle.");
-        $submitBtn.removeAttribute("disabled");
-        return;
-      }
-    }
-
-    if (!emailRegex.test(formData.email)) {
-      showFormError("Please enter a valid email address.");
-      $submitBtn.removeAttribute("disabled");
-      return;
-    }
-
-    if (formData.message.length > MAX_CHARS) {
-      showFormError(`Message cannot exceed ${MAX_CHARS} characters.`);
-      $submitBtn.removeAttribute("disabled");
-      return;
-    }
+    // Lock all inputs and counter buttons
+    $formFields.forEach((field) => (field.disabled = true));
+    $decrementBtn.disabled = true;
+    $incrementBtn.disabled = true;
 
     const response = await fetch("/checkout", {
       method: "POST",
@@ -233,21 +260,15 @@ $contributeForm.addEventListener("submit", async (event) => {
       const { checkoutUrl } = await response.json();
 
       if (checkoutUrl) {
-        // Resets
         $contributeForm.reset();
-
         $charCounter.textContent = `0/${MAX_CHARS}`;
         $charCounter.classList.remove("text-warning", "text-error");
         $charCounter.classList.add("on-surface-variant-text");
+        setAmount(MIN_CONTRIBUTION);
 
-        setCounterValue(MIN_CONTRIBUTION);
-
-        // Hand off to Polar's hosted checkout page to complete payment
         window.location.href = checkoutUrl;
-
         return;
       }
-
       showFormError("Something went wrong starting the checkout. Try again.");
     } else {
       const { error } = await response.json().catch(() => ({}));
@@ -261,8 +282,15 @@ $contributeForm.addEventListener("submit", async (event) => {
     console.error("Error submitting contribute form:", error);
     showFormError("Network error. Check your connection and try again.");
   } finally {
-    $submitBtn.removeAttribute("disabled");
+    // UNLOCK UI ON ERROR (or if redirect fails)
+    $submitBtn.classList.remove("loading");
     $submitBtn.removeAttribute("aria-label");
+
+    $formFields.forEach((field) => (field.disabled = false));
+
+    // Restore the correct logical states for the counter and submit buttons
+    updateCounterButtonState($amountField.value);
+    toggleSubmitBtn();
   }
 });
 

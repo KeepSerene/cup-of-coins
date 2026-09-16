@@ -79,6 +79,8 @@ The whole app is one Express server rendering a single EJS page, backed by Mongo
 **Form UX**
 
 - The dollar-amount stepper blocks non-digit keystrokes _before_ they're inserted (via `beforeinput`), rather than sanitizing after the fact — the naive "strip bad characters on `input`" approach re-assigns the field's value mid-type and silently scrambles the cursor position.
+- **Dynamic UI constraints:** The increment/decrement counter buttons auto-disable at the $1 and $999 boundaries, and the main contribution button remains disabled until a valid email is detected.
+- **Safe submission:** During the network checkout request, the entire form (all inputs and buttons) is visually dimmed and locked to prevent mid-flight tampering or double-submissions.
 - A live character counter on the message field shifts color as it approaches the 500-character limit.
 - Name/X-handle format, email format, message length, and amount bounds are all validated **client-side for instant feedback and independently server-side** — the server never trusts the client.
 - The success banner auto-dismisses and cleans the `?success=true` query param from the URL, so a page refresh doesn't re-show it.
