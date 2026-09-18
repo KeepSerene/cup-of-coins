@@ -7,6 +7,8 @@
 
 const mongoose = require("mongoose");
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 const supporterSchema = new mongoose.Schema(
   {
     name: {
@@ -14,6 +16,13 @@ const supporterSchema = new mongoose.Schema(
       trim: true,
       maxlength: 60,
       default: "Anonymous",
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      trim: true,
+      lowercase: true,
+      match: [emailRegex, "Please enter a valid email address."],
     },
     message: {
       type: String,

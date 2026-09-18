@@ -80,7 +80,7 @@ async function checkoutController(req, res) {
     }
 
     const supporterMessage = rawMessage;
-    const metadata = { supporterName };
+    const metadata = { supporterName, supporterEmail: rawEmail };
 
     if (supporterMessage) {
       metadata.supporterMessage = supporterMessage;

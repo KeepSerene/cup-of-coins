@@ -59,6 +59,10 @@ async function polarWebhookController(req, res) {
             order.customer?.name ||
             order.billing_name ||
             "Anonymous",
+          email:
+            order.metadata?.supporterEmail ||
+            order.customer_email ||
+            order.customer?.email,
           message: order.metadata?.supporterMessage || "",
           amountInCents: order.total_amount,
           polarCheckoutId: order.id,

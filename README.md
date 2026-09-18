@@ -68,7 +68,7 @@ The whole app is one Express server rendering a single EJS page, backed by Mongo
 - Pay-what-you-want checkout for any **whole-dollar amount between $1 and $999**, handed off to Polar's hosted checkout page.
 - Amounts are deliberately whole dollars only — a tipping gesture doesn't need decimal precision, and it sidesteps an entire class of floating-point rounding bugs (`amountInCents` is stored as an integer throughout).
 - The $1–$999 range is enforced everywhere _this app_ controls the amount (the input widget, and the `/checkout` endpoint), but Polar's "pay what you want" pricing has no built-in maximum — a supporter can raise the amount on Polar's own page. When that happens the server logs it for visibility rather than silently rejecting real money.
-- Supporter name/message metadata is round-tripped through Polar's checkout `metadata` field and read back on the `order.paid` webhook, so no app-specific data needs to live on Polar's side.
+- Supporter name, email, and message metadata is round-tripped through Polar's checkout `metadata` field and read back on the `order.paid` webhook, so no app-specific data needs to live on Polar's side.
 
 **Supporters wall**
 
@@ -146,7 +146,7 @@ Payments are handled entirely by [Polar](https://polar.sh), running against thei
 1. The visitor fills out the contribution form on the home page; the client validates it, then `POST`s to `/checkout`.
 2. `checkout.controller.js` re-validates everything server-side, then calls `polarClient.checkouts.create(...)` to open a Polar-hosted checkout session with the amount, email, name, and message (as metadata) attached.
 3. The visitor completes payment on Polar's hosted page and is redirected back to the site.
-4. Independently, Polar delivers an `order.paid` **webhook** to `/webhooks/polar` once the payment settles. The webhook handler verifies the signature, then persists a `Supporter` document (name, message, amount, and the originating checkout ID for idempotency) to MongoDB.
+4. Independently, Polar delivers an `order.paid` **webhook** to `/webhooks/polar` once the payment settles. The webhook handler verifies the signature, then persists a `Supporter` document (name, email, message, amount, and the originating checkout ID for idempotency) to MongoDB.
 
 Recording supporters via the webhook — rather than on the checkout redirect — means the supporters wall only ever reflects payments Polar has actually confirmed, not ones a visitor merely started.
 
